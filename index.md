@@ -28,11 +28,11 @@ The first five rows of `tracks_cleaned`, shown with selected columns, are below.
 
 | Track | Artist credits | Energy | Loudness (dB) | Danceability | Tempo (BPM) |
 | --- | --- | ---: | ---: | ---: | ---: |
-| Comedy | Gen Hoshino | 0.461 | −6.746 | 0.676 | 87.917 |
-| Ghost - Acoustic | Ben Woodward | 0.166 | −17.235 | 0.420 | 77.489 |
-| To Begin Again | Ingrid Michaelson and ZAYN | 0.359 | −9.734 | 0.438 | 76.332 |
-| Can't Help Falling In Love | Kina Grannis | 0.0596 | −18.515 | 0.266 | 181.740 |
-| Hold On | Chord Overstreet | 0.443 | −9.681 | 0.618 | Missing |
+| Comedy | Gen Hoshino | 0.461 | $$-6.746$$ | 0.676 | 87.917 |
+| Ghost - Acoustic | Ben Woodward | 0.166 | $$-17.235$$ | 0.420 | 77.489 |
+| To Begin Again | Ingrid Michaelson and ZAYN | 0.359 | $$-9.734$$ | 0.438 | 76.332 |
+| Can't Help Falling In Love | Kina Grannis | 0.0596 | $$-18.515$$ | 0.266 | 181.740 |
+| Hold On | Chord Overstreet | 0.443 | $$-9.681$$ | 0.618 | Missing |
 
 ### Univariate analysis
 
@@ -44,7 +44,7 @@ Energy is left-skewed, with more tracks concentrated toward the high end of the 
 
 #### Energy and loudness
 
-Energy and loudness are strongly positively correlated across the cleaned tracks (Pearson *r* = 0.759). Louder tracks generally have higher Energy scores, consistent with both measures being derived from the audio.
+Energy and loudness are strongly positively correlated across the cleaned tracks (Pearson $$r = 0.759$$). Louder tracks generally have higher Energy scores, consistent with both measures being derived from the audio.
 
 <iframe src="assets/energy-vs-loudness.html" title="Spotify Energy and loudness scatterplot" style="display: block; width: 100%; border: 0;" height="440" loading="lazy"></iframe>
 
@@ -54,40 +54,40 @@ I chose classical, sleep, jazz, EDM, and heavy metal to compare quiet listening 
 
 <iframe src="assets/energy-by-genre.html" title="Spotify Energy distributions across five genres" style="display: block; width: 100%; border: 0;" height="430" loading="lazy"></iframe>
 
-The relationship between genre and audio features also varies across the full set of labels. Among the seven audio features examined, speechiness has the strongest absolute association with the comedy label (*r* = 0.625), consistent with substantial spoken content. Opera tracks have lower average danceability than the remaining tracks (0.313 versus 0.565).
+The relationship between genre and audio features also varies across the full set of labels. Among the seven audio features examined, speechiness has the strongest absolute association with the comedy label ($$r = 0.625$$), consistent with substantial spoken content. Opera tracks have lower average danceability than the remaining tracks (0.313 versus 0.565).
 
 #### Genre by features
 
-I calculated the correlations between each feature and genre, and select the most correlated feature of each genre. The chart below shows the top 5 genres with the largest r correlation coefficients and lowest r correlation coefficients:
+I calculated the correlations between each feature and genre, and select the most correlated feature of each genre. The table shows the five genres with the largest values of $$r$$ and the five with the smallest.
 
-|                | feature          |         r |   n_tracks |
-|:---------------|:-----------------|----------:|-----------:|
-| comedy         | speechiness      |  0.624981 |        996 |
-| study          | instrumentalness |  0.201743 |        998 |
-| minimal-techno | instrumentalness |  0.187183 |        998 |
-| classical      | acousticness     |  0.178221 |        933 |
-| new-age        | instrumentalness |  0.176864 |        994 |
-| opera          | danceability     | -0.148961 |        992 |
-| iranian        | danceability     | -0.156342 |        988 |
-| black-metal    | danceability     | -0.159267 |        997 |
-| grindcore      | danceability     | -0.174108 |        998 |
-| sleep          | danceability     | -0.236859 |       1000 |
+|                | feature          |          $$r$$ | n_tracks |
+|:---------------|:-----------------|---------------:|---------:|
+| comedy         | speechiness      |  $$0.624981$$  |      996 |
+| study          | instrumentalness |  $$0.201743$$  |      998 |
+| minimal-techno | instrumentalness |  $$0.187183$$  |      998 |
+| classical      | acousticness     |  $$0.178221$$  |      933 |
+| new-age        | instrumentalness |  $$0.176864$$  |      994 |
+| opera          | danceability     | $$-0.148961$$  |      992 |
+| iranian        | danceability     | $$-0.156342$$  |      988 |
+| black-metal    | danceability     | $$-0.159267$$  |      997 |
+| grindcore      | danceability     | $$-0.174108$$  |      998 |
+| sleep          | danceability     | $$-0.236859$$  |     1000 |
 
-Then, this chart below shows the genres with lowest absolute r r correlation coefficients,
+The next table shows the genres with the lowest $$\vert r \vert$$ values,
 meaning these features are insufficient to express and distinguish these genres:
 
-|            | feature          |          r |   n_tracks |     r_abs |
-|:-----------|:-----------------|-----------:|-----------:|----------:|
-| anime      | instrumentalness |  0.0294272 |        999 | 0.0294272 |
-| psych-rock | valence          |  0.0379651 |        996 | 0.0379651 |
-| indie      | instrumentalness | -0.0394236 |        997 | 0.0394236 |
-| german     | energy           | -0.0395589 |        963 | 0.0395589 |
-| indie-pop  | instrumentalness | -0.0430991 |       1000 | 0.0430991 |
-| turkish    | instrumentalness | -0.0451395 |        999 | 0.0451395 |
-| folk       | acousticness     |  0.0462291 |        999 | 0.0462291 |
-| emo        | instrumentalness | -0.0469184 |       1000 | 0.0469184 |
-| indian     | acousticness     |  0.0491991 |        999 | 0.0491991 |
-| swedish    | instrumentalness | -0.0495781 |       1000 | 0.0495781 |
+|            | feature          |          $$r$$ | n_tracks | $$\vert r \vert$$ |
+|:-----------|:-----------------|---------------:|---------:|------------------:|
+| anime      | instrumentalness |  $$0.0294272$$ |      999 |     $$0.0294272$$ |
+| psych-rock | valence          |  $$0.0379651$$ |      996 |     $$0.0379651$$ |
+| indie      | instrumentalness | $$-0.0394236$$ |      997 |     $$0.0394236$$ |
+| german     | energy           | $$-0.0395589$$ |      963 |     $$0.0395589$$ |
+| indie-pop  | instrumentalness | $$-0.0430991$$ |     1000 |     $$0.0430991$$ |
+| turkish    | instrumentalness | $$-0.0451395$$ |      999 |     $$0.0451395$$ |
+| folk       | acousticness     |  $$0.0462291$$ |      999 |     $$0.0462291$$ |
+| emo        | instrumentalness | $$-0.0469184$$ |     1000 |     $$0.0469184$$ |
+| indian     | acousticness     |  $$0.0491991$$ |      999 |     $$0.0491991$$ |
+| swedish    | instrumentalness | $$-0.0495781$$ |     1000 |     $$0.0495781$$ |
 
 ### Interesting aggregates
 
@@ -96,11 +96,11 @@ I grouped tracks by their reference popularity score and computed the mean of fi
 | Popularity band | Tracks | Danceability | Energy | Valence | Acousticness | Liveness |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | 0 | 9,347 | 0.556 | 0.578 | 0.483 | 0.390 | 0.190 |
-| (0, 20] | 15,738 | 0.562 | 0.652 | 0.449 | 0.287 | 0.203 |
-| (20, 40] | 30,033 | 0.545 | 0.654 | 0.492 | 0.336 | 0.244 |
-| (40, 60] | 25,786 | 0.572 | 0.618 | 0.444 | 0.341 | 0.216 |
-| (60, 80] | 8,335 | 0.595 | 0.640 | 0.487 | 0.276 | 0.181 |
-| (80, 100] | 501 | 0.659 | 0.668 | 0.513 | 0.209 | 0.175 |
+| $$(0, 20]$$ | 15,738 | 0.562 | 0.652 | 0.449 | 0.287 | 0.203 |
+| $$(20, 40]$$ | 30,033 | 0.545 | 0.654 | 0.492 | 0.336 | 0.244 |
+| $$(40, 60]$$ | 25,786 | 0.572 | 0.618 | 0.444 | 0.341 | 0.216 |
+| $$(60, 80]$$ | 8,335 | 0.595 | 0.640 | 0.487 | 0.276 | 0.181 |
+| $$(80, 100]$$ | 501 | 0.659 | 0.668 | 0.513 | 0.209 | 0.175 |
 
 Tracks in the highest popularity band have higher average danceability and lower average acousticness and liveness than tracks in the other bands. Energy and valence show no clear monotonic relationship with popularity.
 
@@ -112,14 +112,16 @@ Tempo may be harder to estimate for tracks with weak rhythmic structure. If the 
 
 ### Missingness dependency
 
-I tested whether tempo missingness was associated with Energy and whether time signature missingness was associated with danceability. In each test, the null hypothesis was that missingness and the observed feature were independent. The alternative was that there was an association. I permuted the missingness labels 5,000 times and compared the absolute observed difference in group means with the permutation distribution.
+I tested tempo missingness against Energy and whether the track had multiple credited artists. I tested time signature missingness against danceability and the explicit-content flag. In each test, the null hypothesis was that missingness and the compared feature were independent. I permuted the missingness labels 5,000 times and compared the absolute observed difference in group means or proportions with the permutation distribution.
 
-| Missing field | Missing tracks | Compared feature | Mean if missing | Mean if observed | Difference | *p*-value |
+| Missing field | Missing tracks | Compared feature | Mean if missing | Mean if observed | Difference | $$p$$-value |
 | --- | ---: | --- | ---: | ---: | ---: | ---: |
-| `tempo` | 15,212 (16.95%) | Energy | 0.490 | 0.664 | −0.1735 | 0.0002 |
-| `time_signature` | 1,008 (1.12%) | Danceability | 0.351 | 0.565 | −0.2139 | 0.0002 |
+| `tempo` | 15,212 ($$16.95\%$$) | Energy | 0.490 | 0.664 | $$-0.1735$$ | 0.0002 |
+| `tempo` | 15,212 ($$16.95\%$$) | Multiple credited artists | $$24.63\%$$ | $$25.28\%$$ | $$-0.65$$ pp | 0.0944 |
+| `time_signature` | 1,008 ($$1.12\%$$) | Danceability | 0.351 | 0.565 | $$-0.2139$$ | 0.0002 |
+| `time_signature` | 1,008 ($$1.12\%$$) | Explicit-content flag | $$7.24\%$$ | $$8.60\%$$ | $$-1.36$$ pp | 0.1252 |
 
-Neither test produced a permuted difference as extreme as its observed difference. The results show that the missingness of these fields is associated with observed audio features, which is consistent with a missing-at-random (MAR) explanation.
+At the $$0.05$$ significance level, tempo missingness was associated with Energy, and time signature missingness was associated with danceability. These associations are consistent with a missing-at-random (MAR) explanation. The exploratory comparisons did not detect associations between tempo missingness and having multiple credited artists, or between time signature missingness and the explicit-content flag. Differences between proportions are shown in percentage points (pp).
 
 <iframe src="assets/audio-feature-missingness.html" title="Energy and danceability distributions by missingness status" style="display: block; width: 100%; border: 0;" height="600" loading="lazy"></iframe>
 
@@ -130,9 +132,9 @@ The [genre comparison](#energy-by-genre) shows that sleep and classical tracks h
 - **Null hypothesis.** The Energy distributions of sleep and classical tracks are the same.
 - **Alternative hypothesis.** Their Energy distributions differ.
 - **Test statistic.** The maximum absolute difference between the two empirical cumulative distribution functions. This captures differences in shape as well as differences in location.
-- **Significance level.** α = 0.05.
+- **Significance level.** $$\alpha = 0.05$$.
 
-The observed KS statistic was **0.2331** and the two-sided *p*-value was approximately **1.67 × 10⁻²³**. At the 0.05 significance level, I reject the null hypothesis. The sample provides evidence that the two genres have different Energy distributions.
+The observed KS statistic was **0.2331** and the two-sided $$p$$-value was approximately $$1.67 \times 10^{-23}$$. At the $$0.05$$ significance level, I reject the null hypothesis. The sample provides evidence that the two genres have different Energy distributions.
 
 ## Framing a Prediction Problem
 
@@ -140,41 +142,41 @@ I frame the prediction problem as **regression**. The target is `energy`, a cont
 
 Spotify computes Energy from the audio. This task reconstructs that score from related audio summaries, including loudness. In the catalog completion setting, other audio summaries, genre tags, and artist credits can be available when Energy needs to be estimated. The artist encoding uses Energy observations from the data used to fit the model.
 
-I use **mean absolute error (MAE)** as the primary metric because it expresses the average prediction error directly in Energy units. I also report R² to show how much variation in Energy the models explain.
+I use **mean absolute error (MAE)** as the primary metric because it expresses the average prediction error directly in Energy units. I also report $$R^2$$ to show how much variation in Energy the models explain.
 
 ## Baseline Model
 
-After cleaning, each row represents one unique Spotify track ID. I split the catalog tracks into training (60%), validation (20%), and test (20%) sets. The same artist could appear in multiple splits. The holdout measures performance on tracks the models did not use for fitting.
+After cleaning, each row represents one unique Spotify track ID. I split the catalog tracks into training ($$60\%$$), validation ($$20\%$$), and test ($$20\%$$) sets. The same artist could appear in multiple splits. The holdout measures performance on tracks the models did not use for fitting.
 
 - **Training median.** A constant predictor that minimizes absolute error on the training targets.
-- **Ridge regression.** A linear model with a regularization strength of α = 10. The pipeline constructs features, imputes missing values with medians and adds missingness indicators, standardizes the features, and fits Ridge.
+- **Ridge regression.** A linear model with a regularization strength of $$\alpha = 10$$. The pipeline constructs features, imputes missing values with medians and adds missingness indicators, standardizes the features, and fits Ridge.
 
-The Ridge pipeline uses eight continuous audio measurements, log duration, time signature as a discrete count, mode as a binary major/minor indicator, and a sine/cosine encoding of musical key. That gives 13 feature columns before the imputer adds its indicators. Regression predictions are clipped to the interval from 0 to 1 for evaluation.
+The Ridge pipeline uses eight continuous audio measurements, log duration, time signature as a discrete count, mode as a binary major/minor indicator, and a sine/cosine encoding of musical key. That gives 13 feature columns before the imputer adds its indicators. Regression predictions are clipped to $$[0, 1]$$ for evaluation.
 
-The EDA showed a strong relationship between Energy and loudness, giving a linear model a useful starting point. The initial Ridge fit achieved a test MAE of approximately 0.093, compared with 0.212 for the training median. About 62% of its predictions were within 0.10 of the true Energy score.
+The EDA showed a strong relationship between Energy and loudness, giving a linear model a useful starting point. The initial Ridge fit achieved a test MAE of approximately 0.093, compared with 0.212 for the training median. About $$62\%$$ of its predictions were within 0.10 of the true Energy score.
 
 ## Final Model
 
 The final model is a ReLU multilayer perceptron (MLP) regressor. It extends the Ridge inputs with two engineered audio features and two sources of catalog metadata.
 
-- **Relative amplitude.** `10^(loudness / 20)` maps loudness from decibels to a linear amplitude scale.
-- **Loudness × acousticness.** `(loudness + 30) × acousticness` lets the model learn how the relationship between loudness and Energy varies with acousticness.
+- **Relative amplitude.** $$10^{\mathrm{loudness}/20}$$ maps loudness from decibels to a linear amplitude scale.
+- **Loudness–acousticness interaction.** $$(\mathrm{loudness} + 30) \times \mathrm{acousticness}$$ lets the model learn how the relationship between loudness and Energy varies with acousticness.
 - **Genre tags.** Each genre gets a binary feature. A track with multiple tags can activate multiple features.
 - **First credited artist.** The model uses a smoothed historical Energy mean estimated from the fitting data. I use five-fold cross-fitting for rows used to fit the pipeline. At prediction time, unseen artists receive the mean Energy of the fitting data.
 
 ### Model selection and refit
 
-I first compared four feature sets at the same MLP settings. Audio features with both genre and artist metadata achieved the lowest validation MAE. I then compared one hidden layer of 64 units with two layers of 128 and 64 units, using α values of 0.0001 and 0.01 to test different levels of L2 regularization. The selected MLP used one 64-unit hidden layer and α = 0.01, with a validation MAE of 0.07003.
+I first compared four feature sets at the same MLP settings. Audio features with both genre and artist metadata achieved the lowest validation MAE. I then compared one hidden layer of 64 units with two layers of 128 and 64 units, using $$\alpha$$ values of 0.0001 and 0.01 to test different levels of $$L_2$$ regularization. The selected MLP used one 64-unit hidden layer and $$\alpha = 0.01$$, with a validation MAE of 0.07003.
 
 After locking the feature set and hyperparameters, I refit the MLP and both baselines on the same 71,792 training and validation tracks. I evaluated all three models on the original 17,948 held-out tracks.
 
-| Model | Test MAE | Test R² | Predictions within 0.10 |
+| Model | Test MAE | Test $$R^2$$ | Predictions within 0.10 |
 | --- | ---: | ---: | ---: |
-| Training median | 0.2115 | −0.0242 | 26.14% |
-| Ridge regression | 0.0933 | 0.7743 | 62.01% |
-| **MLP regression** | **0.0690** | **0.8679** | **76.42%** |
+| Training median | 0.2115 | $$-0.0242$$ | $$26.14\%$$ |
+| Ridge regression | 0.0933 | 0.7743 | $$62.01\%$$ |
+| **MLP regression** | **0.0690** | **0.8679** | **$$76.42\%$$** |
 
-The final MLP lowered MAE by about 26% compared with Ridge. As a supplementary check, I used the continuous Energy predictions to rank tracks above and below 0.5. The MLP achieved a ROC AUC of 0.9707 on that comparison.
+The final MLP lowered MAE by about $$26\%$$ compared with Ridge. As a supplementary check, I used the continuous Energy predictions to rank tracks above and below 0.5. The MLP achieved a ROC AUC of 0.9707 on that comparison.
 
 ## Fairness Analysis
 
@@ -185,7 +187,7 @@ I grouped test tracks by whether their first credited artist appeared as the fir
 - **Null hypothesis.** Artist-level mean squared errors are exchangeable between the seen and unseen groups.
 - **Alternative hypothesis.** Artist-weighted RMSE is higher for unseen artists.
 - **Test statistic.** Artist-weighted RMSE for unseen artists minus that for seen artists.
-- **Significance level.** α = 0.05.
+- **Significance level.** $$\alpha = 0.05$$.
 
 I first averaged the squared errors within each artist, then averaged across artists in each group and took the square root. This gives each artist equal weight. I ran 10,000 permutations of group membership at the artist level, keeping each artist's tracks together.
 
@@ -194,4 +196,4 @@ I first averaged the squared errors within each artist, then averaged across art
 | Seen during fitting | 6,353 | 16,284 | 0.0919 |
 | Unseen during fitting | 1,533 | 1,664 | 0.0991 |
 
-The estimated RMSE difference was **0.0072** Energy units, with a one-sided permutation *p*-value of **0.0014**. At the 0.05 significance level, I reject the null hypothesis. The refitted model had higher prediction error for unseen artists on this test set. Differences in genre mix or other track characteristics may also contribute to the observed gap.
+The estimated RMSE difference was **0.0072** Energy units, with a one-sided permutation $$p$$-value of **0.0014**. At the $$0.05$$ significance level, I reject the null hypothesis. The refitted model had higher prediction error for unseen artists on this test set. Differences in genre mix or other track characteristics may also contribute to the observed gap.
