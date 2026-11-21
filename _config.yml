@@ -1,5 +1,5 @@
 title: Predicting Spotify Track Energy Across 114 Genres
-description: Your Name · UC San Diego DSC 80
+description: Tianhan Jiang · UC San Diego DSC 80
 remote_theme: pages-themes/cayman@v0.2.0
 plugins:
   - jekyll-remote-theme
