@@ -56,6 +56,39 @@ I chose classical, sleep, jazz, EDM, and heavy metal to compare quiet listening 
 
 The relationship between genre and audio features also varies across the full set of labels. Among the seven audio features examined, speechiness has the strongest absolute association with the comedy label (*r* = 0.625), consistent with substantial spoken content. Opera tracks have lower average danceability than the remaining tracks (0.313 versus 0.565).
 
+#### Genre by features
+
+I calculated the correlations between each feature and genre, and select the most correlated feature of each genre. The chart below shows the top 5 genres with the largest r correlation coefficients and lowest r correlation coefficients:
+
+|                | feature          |         r |   n_tracks |
+|:---------------|:-----------------|----------:|-----------:|
+| comedy         | speechiness      |  0.624981 |        996 |
+| study          | instrumentalness |  0.201743 |        998 |
+| minimal-techno | instrumentalness |  0.187183 |        998 |
+| classical      | acousticness     |  0.178221 |        933 |
+| new-age        | instrumentalness |  0.176864 |        994 |
+| opera          | danceability     | -0.148961 |        992 |
+| iranian        | danceability     | -0.156342 |        988 |
+| black-metal    | danceability     | -0.159267 |        997 |
+| grindcore      | danceability     | -0.174108 |        998 |
+| sleep          | danceability     | -0.236859 |       1000 |
+
+Then, this chart below shows the genres with lowest absolute r r correlation coefficients,
+meaning these features are insufficient to express and distinguish these genres:
+
+|            | feature          |          r |   n_tracks |     r_abs |
+|:-----------|:-----------------|-----------:|-----------:|----------:|
+| anime      | instrumentalness |  0.0294272 |        999 | 0.0294272 |
+| psych-rock | valence          |  0.0379651 |        996 | 0.0379651 |
+| indie      | instrumentalness | -0.0394236 |        997 | 0.0394236 |
+| german     | energy           | -0.0395589 |        963 | 0.0395589 |
+| indie-pop  | instrumentalness | -0.0430991 |       1000 | 0.0430991 |
+| turkish    | instrumentalness | -0.0451395 |        999 | 0.0451395 |
+| folk       | acousticness     |  0.0462291 |        999 | 0.0462291 |
+| emo        | instrumentalness | -0.0469184 |       1000 | 0.0469184 |
+| indian     | acousticness     |  0.0491991 |        999 | 0.0491991 |
+| swedish    | instrumentalness | -0.0495781 |       1000 | 0.0495781 |
+
 ### Interesting aggregates
 
 I grouped tracks by their reference popularity score and computed the mean of five audio features in each band.
