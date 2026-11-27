@@ -44,7 +44,7 @@ Energy is left-skewed, with more tracks concentrated toward the high end of the 
 
 #### Energy and loudness
 
-Energy and loudness are strongly positively correlated across the cleaned tracks (Pearson $$r = 0.759$$). Louder tracks generally have higher Energy scores, consistent with both measures being derived from the audio.
+Energy and loudness are strongly positively correlated across all 89,740 cleaned tracks (Pearson $$r = 0.759$$). Louder tracks generally have higher Energy scores, consistent with both measures being derived from the audio. The scatterplot shows a sample of 20,000 tracks.
 
 <iframe src="assets/energy-vs-loudness.html" title="Spotify Energy and loudness scatterplot" style="display: block; width: 100%; border: 0;" height="440" loading="lazy"></iframe>
 
@@ -58,7 +58,7 @@ The relationship between genre and audio features also varies across the full se
 
 #### Genre by features
 
-I calculated the correlations between each feature and genre, and select the most correlated feature of each genre. The table shows the five genres with the largest values of $$r$$ and the five with the smallest.
+For each genre, I encode whether each unique track carries that genre tag, then compute the Pearson correlation between that binary indicator and each of seven audio features. I select the feature with the largest absolute correlation for each genre. The table shows the five largest and five smallest signed correlations among the selected features.
 
 |                | feature          |          $$r$$ | n_tracks |
 |:---------------|:-----------------|---------------:|---------:|
@@ -73,8 +73,7 @@ I calculated the correlations between each feature and genre, and select the mos
 | grindcore      | danceability     | $$-0.174108$$  |      998 |
 | sleep          | danceability     | $$-0.236859$$  |     1000 |
 
-The next table shows the genres with the lowest $$\vert r \vert$$ values,
-meaning these features are insufficient to express and distinguish these genres:
+The next table shows the ten genres whose strongest individual feature has the smallest absolute correlation with genre membership. These labels have weak associations with the individual features examined here.
 
 |            | feature          |          $$r$$ | n_tracks | $$\vert r \vert$$ |
 |:-----------|:-----------------|---------------:|---------:|------------------:|
@@ -140,20 +139,20 @@ The observed KS statistic was **0.2331** and the two-sided $$p$$-value was appro
 
 I frame the prediction problem as **regression**. The target is `energy`, a continuous value between 0 and 1 that is present for every track in the cleaned table. The model covers the full catalog in the dataset, spanning 114 genre labels.
 
-Spotify computes Energy from the audio. This task reconstructs that score from related audio summaries, including loudness. In the catalog completion setting, other audio summaries, genre tags, and artist credits can be available when Energy needs to be estimated. The artist encoding uses Energy observations from the data used to fit the model.
+Spotify computes Energy from audio. This task reconstructs that score from related audio summaries, including loudness. The prediction scenario is catalog completion for entries that already have audio summaries, track-level genre tags, and artist credits. I take genre tags and artist credits from the catalog records and use Energy observations from the fitting data for the artist encoding.
 
 I use **mean absolute error (MAE)** as the primary metric because it expresses the average prediction error directly in Energy units. I also report $$R^2$$ to show how much variation in Energy the models explain.
 
 ## Baseline Model
 
-After cleaning, each row represents one unique Spotify track ID. I split the catalog tracks into training ($$60\%$$), validation ($$20\%$$), and test ($$20\%$$) sets. The same artist could appear in multiple splits. The holdout measures performance on tracks the models did not use for fitting.
+After cleaning, each row represents one unique Spotify track ID. I use an 80/20 split into a development set of 71,792 tracks and a held-out test set of 17,948 tracks. I fit both baselines once on the full development set and reuse their test predictions in the final comparison. The same artist could appear in both sets. Recording identity across different track IDs was not verified.
 
 - **Training median.** A constant predictor that minimizes absolute error on the training targets.
 - **Ridge regression.** A linear model with a regularization strength of $$\alpha = 10$$. The pipeline constructs features, imputes missing values with medians and adds missingness indicators, standardizes the features, and fits Ridge.
 
 The Ridge pipeline uses eight continuous audio measurements, log duration, time signature as a discrete count, mode as a binary major/minor indicator, and a sine/cosine encoding of musical key. That gives 13 feature columns before the imputer adds its indicators. Regression predictions are clipped to $$[0, 1]$$ for evaluation.
 
-The EDA showed a strong relationship between Energy and loudness, giving a linear model a useful starting point. The initial Ridge fit achieved a test MAE of approximately 0.093, compared with 0.212 for the training median. About $$62\%$$ of its predictions were within 0.10 of the true Energy score.
+The EDA showed a strong relationship between Energy and loudness, giving a linear model a useful starting point. Ridge fitted on the full development set achieved a test MAE of 0.0933, compared with 0.2115 for the training median. About $$62\%$$ of its predictions were within 0.10 of the true Energy score.
 
 ## Final Model
 
@@ -162,13 +161,13 @@ The final model is a ReLU multilayer perceptron (MLP) regressor. It extends the 
 - **Relative amplitude.** $$10^{\mathrm{loudness}/20}$$ maps loudness from decibels to a linear amplitude scale.
 - **Loudness–acousticness interaction.** $$(\mathrm{loudness} + 30) \times \mathrm{acousticness}$$ lets the model learn how the relationship between loudness and Energy varies with acousticness.
 - **Genre tags.** Each genre gets a binary feature. A track with multiple tags can activate multiple features.
-- **First credited artist.** The model uses a smoothed historical Energy mean estimated from the fitting data. I use five-fold cross-fitting for rows used to fit the pipeline. At prediction time, unseen artists receive the mean Energy of the fitting data.
+- **First credited artist.** I encode the normalized name of the first credited artist with a smoothed Energy mean. Within each pipeline fit, five-fold cross-fitting gives each fitting track an encoding computed from the other four folds. Validation and test predictions use the artist mapping learned from the corresponding fitting set. Unseen artists receive that fitting set's mean Energy.
 
 ### Model selection and refit
 
-I first compared four feature sets at the same MLP settings. Audio features with both genre and artist metadata achieved the lowest validation MAE. I then compared one hidden layer of 64 units with two layers of 128 and 64 units, using $$\alpha$$ values of 0.0001 and 0.01 to test different levels of $$L_2$$ regularization. The selected MLP used one 64-unit hidden layer and $$\alpha = 0.01$$, with a validation MAE of 0.07003.
+I fixed the $$L_2$$ regularization strength at $$\alpha = 0.01$$ and compared two feature sets, audio + artist and audio + genre + artist. For each feature set, I tried a single 64-unit hidden layer and a two-layer network with 128 and 64 units. I used the same three shuffled development-set folds for all four configurations and fit a fresh pipeline in each fold, for 12 fits in total. Audio, genre, and artist features with one 64-unit hidden layer achieved the lowest mean validation MAE, **0.07148**, with a standard deviation of **0.00072** across the three folds.
 
-After locking the feature set and hyperparameters, I refit the MLP and both baselines on the same 71,792 training and validation tracks. I evaluated all three models on the original 17,948 held-out tracks.
+I refit the selected MLP on all 71,792 development tracks. I then compared its predictions with those of the two baselines on the original 17,948 held-out test tracks.
 
 | Model | Test MAE | Test $$R^2$$ | Predictions within 0.10 |
 | --- | ---: | ---: | ---: |
@@ -176,13 +175,13 @@ After locking the feature set and hyperparameters, I refit the MLP and both base
 | Ridge regression | 0.0933 | 0.7743 | $$62.01\%$$ |
 | **MLP regression** | **0.0690** | **0.8679** | **$$76.42\%$$** |
 
-The final MLP lowered MAE by about $$26\%$$ compared with Ridge. As a supplementary check, I used the continuous Energy predictions to rank tracks above and below 0.5. The MLP achieved a ROC AUC of 0.9707 on that comparison.
+The final MLP lowered MAE by about $$26\%$$ compared with Ridge. As a supplementary check, I treated tracks with $$\mathrm{Energy} > 0.5$$ as positive and used the continuous Energy predictions as ranking scores. The MLP achieved a ROC AUC of 0.9707.
 
 ## Fairness Analysis
 
 ### Does the model perform worse on tracks by unseen artists?
 
-I grouped test tracks by whether their first credited artist appeared as the first credited artist on any track in the combined training and validation splits. The refitted model uses an artist-specific historical Energy estimate for seen artists and the mean Energy of its fitting data for unseen artists.
+I grouped test tracks by whether the normalized name of their first credited artist appeared as a first credit on any track in the development set. The refitted model uses a smoothed artist-specific Energy estimate for seen names and the development-set mean Energy for unseen names.
 
 - **Null hypothesis.** Artist-level mean squared errors are exchangeable between the seen and unseen groups.
 - **Alternative hypothesis.** Artist-weighted RMSE is higher for unseen artists.
